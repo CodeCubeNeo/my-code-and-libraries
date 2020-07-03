@@ -142,7 +142,6 @@ requests.get(
         }
     };
 })();
-
 // testing
 requests.get(
     "./index.html",
