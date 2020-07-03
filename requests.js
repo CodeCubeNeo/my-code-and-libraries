@@ -144,7 +144,6 @@ requests.get(
 })();
 // testing
 requests.get(
-  "ff"
 	"./index.html",
 	{
 		headers: {
