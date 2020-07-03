@@ -12,6 +12,7 @@
 // requests.get, requests.post, requests.put and requests.delete
 // the callback will receive the data as the first argument and
 // if the data is a string/text (usually it is) you also get the data.json() method which will return the parsed json or an error if parsing failed
+
 // ! example
 requests.get(
 	"./index.html",
