@@ -14,145 +14,145 @@
 // if the data is a string/text (usually it is) you also get the data.json() method which will return the parsed json or an error if parsing failed
 // ! example
 requests.get(
-  "./index.html",
-	{
-		// (#hash will be appended at the end of url)
-    hash: "#hash",
-		// responeType
-		responsetype: "text",
-		// headers
-		headers: {
-			"Content-type": "application/x-www-form-urlencoded"
-		},
-		// url or body data
-		data: {
-			fullName: "John Williams",
-			id: 163
-		}
-	},
-	// callback
-	(data) => console.log(data.json())
+    "./index.html",
+    {
+        // (#hash will be appended at the end of url)
+        hash: "#hash",
+        // responeType
+        responsetype: "text",
+        // headers
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+        },
+        // url or body data
+        data: {
+            fullName: "John Williams",
+            id: 163
+        }
+    },
+    // callback
+    (data) => console.log(data.json())
 );
 // non minified code
 (() => {
-	let mainReq = (method, url, optionsORcallaback, callback) => {
-		// url checking
-		if (typeof url !== "string") throw new Error("Invalid request url, it should be a string");
-		// callback and options
-		if (!(typeof optionsORcallaback === "function" || typeof callback === "function")) throw new Error("Callback should be specified");
-		if (typeof optionsORcallaback !== "object" && typeof callback === "function") throw new Error("Invalid options, they should be an object");
-		if (typeof optionsORcallaback === "function" && typeof callback === "object") throw new Error("Options and callback switched places");
-		let reqCallback;
-		let options = {};
-		if (typeof optionsORcallaback === "object" && typeof callback === "function") {
-			reqCallback = callback;
-			options = optionsORcallaback;
-		} else if (typeof optionsORcallaback === "function") {
-			reqCallback = optionsORcallaback;
-		}
-		// option.headers check if they should be set
-		let reqHeaders = false;
-		if (options.headers) {
-			if (typeof options.headers !== "object") throw new Error("Invalid headers, they should be an object");
-			if (typeof options.headers === "object" && Object.keys(options.headers).length === 0 && options.headers.constructor === Object) {
-				throw new Error("Invalid headers, they are empty");
-			} else {
-				reqHeaders = true;
-			}
-		}
-		function setHeaders() {
-			if (reqHeaders) {
-				for (let [header, value] of Object.entries(options.headers)) {
-					xhr.setRequestHeader(header, value);
-				}
-			}
-		}
-		// make xhr object
-		let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-		// response type
-		if (options.responseType) xhr.responseType = options.responseType;
-		// url params
-		let urlParams = "";
-		if (options.data) {
-			if (typeof options.data !== "object") throw new Error("Invalid params, they should be an object");
-			if (Object.keys(options.data).length === 0 && options.data.constructor === Object) {
-				throw new Error("Invalid headers, they are empty");
-			} else {
-				for (let [header, value] of Object.entries(options.data)) {
-					urlParams ? (urlParams += "&" + header + "=" + value) : (urlParams = header + "=" + value);
-				}
-			}
-		}
-		// url hash
-		let urlHash = options.hash ? options.hash : "";
-		// callback
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState !== 4) return;
-			if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 400) {
-				let response = xhr.response;
-				if (typeof response === "string") {
-					response = new String(xhr.response);
-					Object.getPrototypeOf(response).json = () => {
-						try {
-							return JSON.parse(response);
-						} catch (e) {
-							throw new Error("Couldn't decode json from response: " + e);
-						}
-					};
-					response = response.toString();
-				}
-				reqCallback(response);
-			} else {
-				reqCallback("error", xhr.status);
-			}
-		};
-		xhr.onerror = () => {
-			reqCallback("error");
-		};
-		if (method == "GET") {
-			xhr.open("GET", url + "?" + urlParams + urlHash);
-			setHeaders();
-			xhr.send();
-		} else if (method == "POST") {
-			xhr.open("POST", url + urlHash);
-			setHeaders();
-			xhr.send(urlParams);
-		} else if (method == "PUT") {
-			xhr.open("PUT", url + urlHash);
-			setHeaders();
-			xhr.send(urlParams);
-		} else if (method == "DELETE") {
-			xhr.open("DELETE", url + urlHash);
-			setHeaders();
-			xhr.send(urlParams);
-		}
-	};
-	window.requests = {
-		get: (url, optionsORcallaback, callback) => {
-			mainReq("GET", url, optionsORcallaback, callback);
-		},
-		post: (url, optionsORcallaback, callback) => {
-			mainReq("POST", url, optionsORcallaback, callback);
-		},
-		put: (url, optionsORcallaback, callback) => {
-			mainReq("PUT", url, optionsORcallaback, callback);
-		},
-		delete: (url, optionsORcallaback, callback) => {
-			mainReq("DELETE", url, optionsORcallaback, callback);
-		}
-	};
+    let mainReq = (method, url, optionsORcallaback, callback) => {
+        // url checking
+        if (typeof url !== "string") throw new Error("Invalid request url, it should be a string");
+        // callback and options
+        if (!(typeof optionsORcallaback === "function" || typeof callback === "function")) throw new Error("Callback should be specified");
+        if (typeof optionsORcallaback !== "object" && typeof callback === "function") throw new Error("Invalid options, they should be an object");
+        if (typeof optionsORcallaback === "function" && typeof callback === "object") throw new Error("Options and callback switched places");
+        let reqCallback;
+        let options = {};
+        if (typeof optionsORcallaback === "object" && typeof callback === "function") {
+            reqCallback = callback;
+            options = optionsORcallaback;
+        } else if (typeof optionsORcallaback === "function") {
+            reqCallback = optionsORcallaback;
+        }
+        // option.headers check if they should be set
+        let reqHeaders = false;
+        if (options.headers) {
+            if (typeof options.headers !== "object") throw new Error("Invalid headers, they should be an object");
+            if (typeof options.headers === "object" && Object.keys(options.headers).length === 0 && options.headers.constructor === Object) {
+                throw new Error("Invalid headers, they are empty");
+            } else {
+                reqHeaders = true;
+            }
+        }
+        function setHeaders() {
+            if (reqHeaders) {
+                for (let [header, value] of Object.entries(options.headers)) {
+                    xhr.setRequestHeader(header, value);
+                }
+            }
+        }
+        // make xhr object
+        let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        // response type
+        if (options.responseType) xhr.responseType = options.responseType;
+        // url params
+        let urlParams = "";
+        if (options.data) {
+            if (typeof options.data !== "object") throw new Error("Invalid params, they should be an object");
+            if (Object.keys(options.data).length === 0 && options.data.constructor === Object) {
+                throw new Error("Invalid headers, they are empty");
+            } else {
+                for (let [header, value] of Object.entries(options.data)) {
+                    urlParams ? (urlParams += "&" + header + "=" + value) : (urlParams = header + "=" + value);
+                }
+            }
+        }
+        // url hash
+        let urlHash = options.hash ? options.hash : "";
+        // callback
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== 4) return;
+            if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 400) {
+                let response = xhr.response;
+                if (typeof response === "string") {
+                    response = new String(xhr.response);
+                    Object.getPrototypeOf(response).json = () => {
+                        try {
+                            return JSON.parse(response);
+                        } catch (e) {
+                            throw new Error("Couldn't decode json from response: " + e);
+                        }
+                    };
+                    response = response.toString();
+                }
+                reqCallback(response);
+            } else {
+                reqCallback("error", xhr.status);
+            }
+        };
+        xhr.onerror = () => {
+            reqCallback("error");
+        };
+        if (method == "GET") {
+            xhr.open("GET", url + "?" + urlParams + urlHash);
+            setHeaders();
+            xhr.send();
+        } else if (method == "POST") {
+            xhr.open("POST", url + urlHash);
+            setHeaders();
+            xhr.send(urlParams);
+        } else if (method == "PUT") {
+            xhr.open("PUT", url + urlHash);
+            setHeaders();
+            xhr.send(urlParams);
+        } else if (method == "DELETE") {
+            xhr.open("DELETE", url + urlHash);
+            setHeaders();
+            xhr.send(urlParams);
+        }
+    };
+    window.requests = {
+        get: (url, optionsORcallaback, callback) => {
+            mainReq("GET", url, optionsORcallaback, callback);
+        },
+        post: (url, optionsORcallaback, callback) => {
+            mainReq("POST", url, optionsORcallaback, callback);
+        },
+        put: (url, optionsORcallaback, callback) => {
+            mainReq("PUT", url, optionsORcallaback, callback);
+        },
+        delete: (url, optionsORcallaback, callback) => {
+            mainReq("DELETE", url, optionsORcallaback, callback);
+        }
+    };
 })();
 // testing
 requests.get(
-	"./index.html",
-	{
-		headers: {
-			"Content-type": "application/x-www-form-urlencoded"
-		},
-		data: {
-			fullName: "bosanc",
-			gay: true
-		}
-	},
-	(object) => console.log(object)
+    "./index.html",
+    {
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+        },
+        data: {
+            fullName: "bosanc",
+            gay: true
+        }
+    },
+    (object) => console.log(object)
 );
