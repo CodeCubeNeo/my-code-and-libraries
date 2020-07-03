@@ -14,10 +14,10 @@
 // if the data is a string/text (usually it is) you also get the data.json() method which will return the parsed json or an error if parsing failed
 // ! example
 requests.get(
-    "./index.html",
-    {
+	"./index.html",
+	{
         // (#hash will be appended at the end of url)
-        hash: "#hash",
+    	hash: "#hash",
         // responeType
         responsetype: "text",
         // headers
