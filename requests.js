@@ -25,134 +25,134 @@
 
 // ! example
 requests.get(
-	"./index.html",
-	{
-		// (#hash will be appended at the end of url)
-		hash: "#hash",
-		// responeType
-		responseType: "text", // blob, json, document...
-		// headers (any valid http headers are allowed)
-		headers: {
-			"Content-type": "application/x-www-form-urlencoded"
-		},
-		// url or body data
-		data: {
-			fullName: "John Williams",
-			id: 163
-		}
-	},
-	// callback
-	(data) => console.log(data.json())
+    "./index.html",
+    {
+        // (#hash will be appended at the end of url)
+        hash: "#hash",
+        // responeType
+        responseType: "text", // blob, json, document...
+        // headers (any valid http headers are allowed)
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+        },
+        // url or body data
+        data: {
+            fullName: "John Williams",
+            id: 163
+        }
+    },
+    // callback
+    (data) => console.log(data.json())
 );
 
 // source (not minified) code
 (() => {
-	let mainReq = (method, url, optionsORcallaback, reqCallback) => {
-		// url checking
-		if (typeof url !== "string") throw new Error("Invalid request url, it should be a string");
-		// options and callback
-		if (typeof optionsORcallaback !== "object" && typeof reqCallback === "function") throw new Error("Invalid options, they should be an object");
-		if (typeof optionsORcallaback === "function" && typeof reqCallback === "object") throw new Error("Options and callback should switch places");
-		if (typeof reqCallback !== "function" && typeof optionsORcallaback !== "function") {
-			reqCallback = false;
-			if (typeof optionsORcallaback !== "object") optionsORcallaback = {};
-		} else if (optionsORcallaback === "function") {
-			reqCallback = optionsORcallaback;
-			optionsORcallaback = {};
-		}
-		// check if option.headers are valid
-		if (optionsORcallaback.headers) {
-			if (typeof optionsORcallaback.headers !== "object") {
-				throw new Error("Invalid headers, they should be an object");
-			} else if (typeof optionsORcallaback.headers === "object" && Object.keys(optionsORcallaback.headers).length === 0 && optionsORcallaback.headers.constructor === Object) {
-				throw new Error("Invalid headers, they are empty");
-			}
-		}
-		// make xhr object
-		let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-		// response type
-		if (optionsORcallaback.responseType) xhr.responseType = optionsORcallaback.responseType;
-		// check if url params are valid
-		let urlParams = "";
-		if (optionsORcallaback.data) {
-			if (typeof optionsORcallaback.data !== "object") {
-				throw new Error("Invalid data, it should be an object");
-			} else if (typeof optionsORcallaback.data === "object" && Object.keys(optionsORcallaback.data).length === 0 && optionsORcallaback.data.constructor === Object) {
-				throw new Error("Invalid data, it is empty");
-			} else {
-				for (let [header, value] of Object.entries(optionsORcallaback.data)) {
-					urlParams ? (urlParams += "&" + header + "=" + value) : (urlParams = header + "=" + value);
-				}
-			}
-		}
-		// if callback is specified make it an asynchronous
-		if (reqCallback) {
-			xhr.onreadystatechange = () => {
-				if (xhr.readyState !== 4) return;
-				if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 400) {
-					reqCallback(addJSONmethod(xhr.response));
-				} else {
-					reqCallback("error", xhr.status);
-				}
-			};
-			xhr.onerror = () => {
-				reqCallback("error");
-			};
-		}
-		// two helper functions
-		function setHeaders() {
-			if (optionsORcallaback.headers) {
-				for (let [header, value] of Object.entries(optionsORcallaback.headers)) {
-					xhr.setRequestHeader(header, value);
-				}
-			}
-		}
-		function addJSONmethod(response) {
-			if (typeof response === "string") {
-				response = new String(xhr.response);
-				Object.getPrototypeOf(response).json = () => {
-					try {
-						return JSON.parse(response);
-					} catch (e) {
-						throw new Error("Couldn't decode json from response: " + e);
-					}
-				};
-				response = response.toString();
-			}
-			return response;
-		}
-		// url hash
-		let urlHash = optionsORcallaback.hash ? optionsORcallaback.hash : "";
-		if (method == "GET") {
-			xhr.open("GET", url + (urlParams ? "?" + urlParams : "") + urlHash, !!reqCallback);
-			setHeaders();
-			xhr.send();
-			return reqCallback ? xhr : addJSONmethod(xhr.response);
-		} else if (method == "POST") {
-			xhr.open("POST", url + urlHash, !!reqCallback);
-			setHeaders();
-		} else if (method == "PUT") {
-			xhr.open("PUT", url + urlHash, !!reqCallback);
-			setHeaders();
-		} else if (method == "DELETE") {
-			xhr.open("DELETE", url + urlHash, !!reqCallback);
-			setHeaders();
-		}
-		xhr.send(urlParams);
-		return reqCallback ? xhr : addJSONmethod(xhr.response);
-	};
-	window.requests = {
-		get: (url, optionsORcallaback, callback) => {
-			return mainReq("GET", url, optionsORcallaback, callback);
-		},
-		post: (url, optionsORcallaback, callback) => {
-			return mainReq("POST", url, optionsORcallaback, callback);
-		},
-		put: (url, optionsORcallaback, callback) => {
-			return mainReq("PUT", url, optionsORcallaback, callback);
-		},
-		delete: (url, optionsORcallaback, callback) => {
-			return mainReq("DELETE", url, optionsORcallaback, callback);
-		}
-	};
-})();d
+    let mainReq = (method, url, optionsORcallaback, reqCallback) => {
+        // url checking
+        if (typeof url !== "string") throw new Error("Invalid request url, it should be a string");
+        // options and callback
+        if (typeof optionsORcallaback !== "object" && typeof reqCallback === "function") throw new Error("Invalid options, they should be an object");
+        if (typeof optionsORcallaback === "function" && typeof reqCallback === "object") throw new Error("Options and callback should switch places");
+        if (typeof reqCallback !== "function" && typeof optionsORcallaback !== "function") {
+            reqCallback = false;
+            if (typeof optionsORcallaback !== "object") optionsORcallaback = {};
+        } else if (optionsORcallaback === "function") {
+            reqCallback = optionsORcallaback;
+            optionsORcallaback = {};
+        }
+        // check if option.headers are valid
+        if (optionsORcallaback.headers) {
+            if (typeof optionsORcallaback.headers !== "object") {
+                throw new Error("Invalid headers, they should be an object");
+            } else if (typeof optionsORcallaback.headers === "object" && Object.keys(optionsORcallaback.headers).length === 0 && optionsORcallaback.headers.constructor === Object) {
+                throw new Error("Invalid headers, they are empty");
+            }
+        }
+        // make xhr object
+        let xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        // response type
+        if (optionsORcallaback.responseType) xhr.responseType = optionsORcallaback.responseType;
+        // check if url params are valid
+        let urlParams = "";
+        if (optionsORcallaback.data) {
+            if (typeof optionsORcallaback.data !== "object") {
+                throw new Error("Invalid data, it should be an object");
+            } else if (typeof optionsORcallaback.data === "object" && Object.keys(optionsORcallaback.data).length === 0 && optionsORcallaback.data.constructor === Object) {
+                throw new Error("Invalid data, it is empty");
+            } else {
+                for (let [header, value] of Object.entries(optionsORcallaback.data)) {
+                    urlParams ? (urlParams += "&" + header + "=" + value) : (urlParams = header + "=" + value);
+                }
+            }
+        }
+        // if callback is specified make it an asynchronous
+        if (reqCallback) {
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState !== 4) return;
+                if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 400) {
+                    reqCallback(addJSONmethod(xhr.response));
+                } else {
+                    reqCallback("error", xhr.status);
+                }
+            };
+            xhr.onerror = () => {
+                reqCallback("error");
+            };
+        }
+        // two helper functions
+        function setHeaders() {
+            if (optionsORcallaback.headers) {
+                for (let [header, value] of Object.entries(optionsORcallaback.headers)) {
+                    xhr.setRequestHeader(header, value);
+                }
+            }
+        }
+        function addJSONmethod(response) {
+            if (typeof response === "string") {
+                response = new String(xhr.response);
+                Object.getPrototypeOf(response).json = () => {
+                    try {
+                        return JSON.parse(response);
+                    } catch (e) {
+                        throw new Error("Couldn't decode json from response: " + e);
+                    }
+                };
+                response = response.toString();
+            }
+            return response;
+        }
+        // url hash
+        let urlHash = optionsORcallaback.hash ? optionsORcallaback.hash : "";
+        if (method == "GET") {
+            xhr.open("GET", url + (urlParams ? "?" + urlParams : "") + urlHash, !!reqCallback);
+            setHeaders();
+            xhr.send();
+            return reqCallback ? xhr : addJSONmethod(xhr.response);
+        } else if (method == "POST") {
+            xhr.open("POST", url + urlHash, !!reqCallback);
+            setHeaders();
+        } else if (method == "PUT") {
+            xhr.open("PUT", url + urlHash, !!reqCallback);
+            setHeaders();
+        } else if (method == "DELETE") {
+            xhr.open("DELETE", url + urlHash, !!reqCallback);
+            setHeaders();
+        }
+        xhr.send(urlParams);
+        return reqCallback ? xhr : addJSONmethod(xhr.response);
+    };
+    window.requests = {
+        get: (url, optionsORcallaback, callback) => {
+            return mainReq("GET", url, optionsORcallaback, callback);
+        },
+        post: (url, optionsORcallaback, callback) => {
+            return mainReq("POST", url, optionsORcallaback, callback);
+        },
+        put: (url, optionsORcallaback, callback) => {
+            return mainReq("PUT", url, optionsORcallaback, callback);
+        },
+        delete: (url, optionsORcallaback, callback) => {
+            return mainReq("DELETE", url, optionsORcallaback, callback);
+        }
+    };
+})();
