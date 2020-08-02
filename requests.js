@@ -155,4 +155,4 @@ requests.get(
 			return mainReq("DELETE", url, optionsORcallaback, callback);
 		}
 	};
-})();
+})();d
